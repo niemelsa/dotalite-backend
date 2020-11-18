@@ -1,20 +1,17 @@
 import express, { Request, Response } from 'express';
+import passport from 'passport';
 import controllers from './auth.controllers';
 
 const router = express.Router();
 
-/* /api/auth */
-router
-  .route('/')
-  .get(controllers.test)
-  .put(controllers.test)
-  .delete(controllers.test);
+// steam authentication
+router.get('/steam', passport.authenticate('steam', { failureRedirect: '/' }));
 
-/* /api/auth/:id */
-router
-  .route('/:id')
-  .get(controllers.test)
-  .put(controllers.test)
-  .delete(controllers.test);
+// steam auth callback
+router.get(
+  '/steam/return',
+  passport.authenticate('steam', { session: false, failureRedirect: '/' }),
+  controllers.handleLogin
+);
 
 export default router;

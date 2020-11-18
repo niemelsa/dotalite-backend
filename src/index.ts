@@ -4,6 +4,9 @@ import helmet from 'helmet';
 import config from './config';
 import authRouter from './resources/auth/auth.router';
 import userRouter from './resources/user/user.router';
+import session from 'express-session';
+import passportInit from './utils/passport';
+import passport from 'passport';
 
 const app: Application = express();
 
@@ -14,10 +17,31 @@ app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(helmet());
+app.use(
+  session({
+    secret: config.secrets.sessionSecret,
+    name: 'dotalite-session',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+passportInit();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes
-app.use('/api/auth', authRouter);
-app.use('/api/user', userRouter);
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
+
+app.get('/', (req, res) => {
+  console.log(req.isAuthenticated());
+  res.send(req.user);
+});
+
+app.get('/test', (req, res) => {
+  console.log(req.isAuthenticated());
+  res.send(req.user);
+});
 
 async function bootstrap() {
   app.listen(config.port, () => {

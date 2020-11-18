@@ -1,10 +1,13 @@
+import { UserRequest } from './../../interfaces/user-request.interface';
+import { PrismaClient } from '@prisma/client';
 import { Response } from 'express';
-import { Request } from 'express';
 
-const test = (req: Request, res: Response) => {
-  res.status(200).send({ message: 'heloustia' });
+const prisma = new PrismaClient();
+
+const handleLogin = async (req: UserRequest, res: Response) => {
+  console.log(req.user);
 };
 
 export default {
-  test,
+  handleLogin,
 };

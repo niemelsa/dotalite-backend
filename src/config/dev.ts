@@ -1,3 +1,1 @@
-export const config = {
-  //   dbUrl: 'testurl.com',
-};
+export const config = {};
