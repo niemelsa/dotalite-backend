@@ -12,6 +12,10 @@ app.use(json());
 app.use(urlencoded());
 app.use(helmet());
 
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
+
 async function bootstrap() {
   app.listen(config.port, () => {
     console.log(`Listening on port ${config.port}...`);
