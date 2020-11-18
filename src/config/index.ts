@@ -1,13 +1,26 @@
-import dotenv from "dotenv";
-
-process.env.NODE_ENV = process.env.NODE_ENV || "development";
+import dotenv from 'dotenv';
+import merge from 'lodash.merge';
 
 dotenv.config();
 
-if (!process.env.PORT) {
-  process.exit(1);
+const env = process.env.NODE_ENV || 'development';
+const port = process.env.PORT || 3000;
+
+const baseConfig = {
+  env,
+  port,
+  secrets: {
+    steamKey: process.env.STEAM_KEY,
+  },
+  dbUrl: process.env.DATABASE_URL,
+};
+
+let envConfig = {};
+
+if (env === 'test' || env === 'testing') {
+  envConfig = require('./testing').config;
+} else {
+  envConfig = require('./dev').config;
 }
 
-export default {
-  port: parseInt(process.env.PORT, 10),
-};
+export default merge(baseConfig, envConfig);
