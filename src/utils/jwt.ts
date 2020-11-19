@@ -1,4 +1,7 @@
-import jwt from 'jsonwebtoken';
+import { UserRequest } from './../interfaces/user-request.interface';
+import { NextFunction, Request, Response } from 'express';
+import jwt, { VerifyErrors } from 'jsonwebtoken';
+import { nextTick } from 'process';
 import config from '../config';
 
 export const newToken = (user: any) => {
@@ -11,11 +14,31 @@ export const newToken = (user: any) => {
   );
 };
 
-export const verifyToken = (token: any) => {
-  new Promise((resolve, reject) => {
-    jwt.verify(token, config.secrets.jwtSecret, (err: any, payload: any) => {
-      if (err) return reject(err);
-      resolve(payload);
-    });
+export const verifyToken = (token: any): Promise<object> => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(
+      token,
+      config.secrets.jwtSecret,
+      (err: VerifyErrors | null, payload: object | undefined) => {
+        if (err) return reject(err);
+        resolve(payload);
+      }
+    );
   });
+};
+
+export const verifyRequest = (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  // console.log(req);
+  const bearerHeader = req.header('Authorization');
+  if (typeof bearerHeader !== 'undefined') {
+    const bearerToken = bearerHeader.split(' ')[1];
+    req.token = bearerToken;
+    next();
+  } else {
+    res.status(403).end();
+  }
 };

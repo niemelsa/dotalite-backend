@@ -39,8 +39,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test', (req, res) => {
-  console.log(req.isAuthenticated());
-  res.send(req.user);
+  const testObj = {
+    token: '326726432743264327',
+    message: 'hellou',
+  };
+
+  res.status(200).send(testObj);
 });
 
 async function bootstrap() {

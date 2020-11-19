@@ -9,8 +9,8 @@ export default async () => {
   passport.use(
     new Strategy(
       {
-        returnURL: 'http://localhost:7000/auth/steam/return',
-        realm: 'http://localhost:7000/',
+        returnURL: 'http://localhost:3000/auth/steam/return',
+        realm: 'http://localhost:3000/',
         apiKey: config.secrets.steamKey,
       },
       async (identifier: any, profile: any, done: any) => {
