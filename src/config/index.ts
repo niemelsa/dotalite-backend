@@ -13,7 +13,7 @@ const baseConfig = {
     steamKey: process.env.STEAM_KEY,
     sessionSecret: process.env.SESSION_SECRET || 'top-secret-testing',
     jwtSecret: process.env.JWT_SECRET || 'top-secret-jwt',
-    expiresIn: 120,
+    expiresIn: '20s',
   },
   dbUrl: process.env.DATABASE_URL,
 };

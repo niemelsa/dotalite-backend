@@ -1,6 +1,6 @@
 import { UserRequest } from './../../interfaces/user-request.interface';
-import { verifyRequest, verifyToken } from './../../utils/jwt';
-import express, { Request, Response } from 'express';
+import { verifyRequestHeader, verifyJwtToken } from './../../utils/jwt';
+import express, { Response } from 'express';
 import passport from 'passport';
 import controllers from './auth.controllers';
 
@@ -16,16 +16,22 @@ router.get(
   controllers.handleLogin
 );
 
-router.get('/verify', verifyRequest, (req: UserRequest, res: Response) => {
-  const token = req.token;
+// verify token
+router.get(
+  '/verify',
+  verifyRequestHeader,
+  (req: UserRequest, res: Response) => {
+    console.log('VERIFYING TOKEN');
+    const token = req.token;
 
-  verifyToken(token)
-    .then((user) => {
-      res.send({ token, user });
-    })
-    .catch((error) => {
-      res.status(403).end();
-    });
-});
+    verifyJwtToken(token)
+      .then((user) => {
+        res.send({ token, user });
+      })
+      .catch((error) => {
+        res.status(403).send(error);
+      });
+  }
+);
 
 export default router;

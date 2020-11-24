@@ -4,7 +4,7 @@ import jwt, { VerifyErrors } from 'jsonwebtoken';
 import { nextTick } from 'process';
 import config from '../config';
 
-export const newToken = (user: any) => {
+export const newJwtToken = (user: any) => {
   return jwt.sign(
     { id: user.id, displayName: user.displayName, image: user.image },
     config.secrets.jwtSecret,
@@ -14,7 +14,7 @@ export const newToken = (user: any) => {
   );
 };
 
-export const verifyToken = (token: any): Promise<object> => {
+export const verifyJwtToken = (token: any): Promise<object> => {
   return new Promise((resolve, reject) => {
     jwt.verify(
       token,
@@ -27,12 +27,11 @@ export const verifyToken = (token: any): Promise<object> => {
   });
 };
 
-export const verifyRequest = (
+export const verifyRequestHeader = (
   req: UserRequest,
   res: Response,
   next: NextFunction
 ) => {
-  // console.log(req);
   const bearerHeader = req.header('Authorization');
   if (typeof bearerHeader !== 'undefined') {
     const bearerToken = bearerHeader.split(' ')[1];
