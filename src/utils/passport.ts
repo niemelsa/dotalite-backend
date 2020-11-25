@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Strategy } from 'passport-steam';
 import config from '../config/index';
 import { PrismaClient } from '@prisma/client';
+import bigInt from 'big-integer';
 
 const prisma = new PrismaClient();
 
@@ -14,9 +15,12 @@ export default async () => {
         apiKey: config.secrets.steamKey,
       },
       async (identifier: any, profile: any, done: any) => {
+        // convert 64bit steamid to 32bit
+        let id32 = bigInt(profile.id).minus('76561197960265728').valueOf();
+
         let user = await prisma.user.findOne({
           where: {
-            id: parseInt(profile.id, 10),
+            id: id32,
           },
         });
 
@@ -24,7 +28,7 @@ export default async () => {
           try {
             user = await prisma.user.create({
               data: {
-                id: parseInt(profile.id, 10),
+                id: id32,
                 displayName: profile.displayName,
                 image: profile._json.avatarfull,
               },

@@ -17,21 +17,6 @@ router.get(
 );
 
 // verify token
-router.get(
-  '/verify',
-  verifyRequestHeader,
-  (req: UserRequest, res: Response) => {
-    console.log('VERIFYING TOKEN');
-    const token = req.token;
-
-    verifyJwtToken(token)
-      .then((user) => {
-        res.send({ token, user });
-      })
-      .catch((error) => {
-        res.status(403).send(error);
-      });
-  }
-);
+router.get('/verify', verifyRequestHeader, controllers.verifyToken);
 
 export default router;
