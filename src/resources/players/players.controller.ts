@@ -1,17 +1,29 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
-const getOnePlayer = (req: Request, res: Response) => {
+const getPlayerData = (req: Request, res: Response) => {
+  let info = axios.get(`https://api.opendota.com/api/players/${req.params.id}`);
+  let wl = axios.get(
+    `https://api.opendota.com/api/players/${req.params.id}/wl`
+  );
+
   axios
-    .get(`https://api.opendota.com/api/players/${req.params.id}`)
-    .then((response) => {
-      res.status(200).send(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
+    .all([info, wl])
+    .then(
+      axios.spread((...responses) => {
+        const info = responses[0].data;
+        const wins = responses[1].data.win;
+        const losses = responses[1].data.lose;
+        const result = { ...info, wins, losses };
+
+        res.status(200).send(result);
+      })
+    )
+    .catch((errors) => {
+      console.log(errors);
     });
 };
 
 export default {
-  getOnePlayer,
+  getPlayerData,
 };

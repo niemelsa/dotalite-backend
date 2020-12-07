@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.route('/');
 
-router.route('/:id').get(controller.getOnePlayer);
+router.route('/:id').get(controller.getPlayerData);
 
 export default router;
