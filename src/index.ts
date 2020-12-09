@@ -5,6 +5,7 @@ import config from './config';
 import authRouter from './resources/auth/auth.router';
 import userRouter from './resources/user/user.router';
 import playersRouter from './resources/players/players.router';
+import searchRouter from './resources/search/search.router';
 import session from 'express-session';
 import passportInit from './utils/passport';
 import passport from 'passport';
@@ -34,6 +35,7 @@ app.use(passport.session());
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/players', playersRouter);
+app.use('/search', searchRouter);
 
 app.get('/', (req, res) => {
   console.log(req.isAuthenticated());
