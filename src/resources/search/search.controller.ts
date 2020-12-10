@@ -1,24 +1,33 @@
+import { SearchResponse } from './../../interfaces/search-response.interface';
 import axios from 'axios';
 import { Request, Response } from 'express';
 
 const getSearchResults = (req: Request, res: Response) => {
   const query = req.query.query;
-  const apiUrl = `https://api.stratz.com/api/v1/search/?query=${query}`;
+  const players = axios.get(`https://api.opendota.com/api/search/?q=${query}`);
+  const others = axios.get(
+    `https://api.stratz.com/api/v1/search/?query=${query}`
+  );
 
-  if (query) {
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        const { data } = response;
+  axios
+    .all([players, others])
+    .then((responses) => {
+      const players = responses[0].data;
+      const { teams, matches, leagues, proPlayers } = responses[1].data;
 
-        res.status(200).send({ results: data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  } else {
-    res.send({ results: null });
-  }
+      const response: SearchResponse = {
+        players,
+        teams,
+        matches,
+        tournaments: leagues,
+        proPlayers,
+      };
+
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 export default {
