@@ -8,17 +8,20 @@ datasource db {
 }
 
 model User {
-  id          Int        @id
-  displayName String
-  image       String?
-  favorites   Favorite[]
+  id        Int        @id @default(autoincrement())
+  uid       String     @unique
+  name      String
+  image     String?
+  email     String?    @unique
+  playerId  String?
+  favorites Favorite[]
 }
 
 model Favorite {
-  id          Int     @id @default(autoincrement())
-  image       String?
-  favorite    Int
+  id          Int    @id @default(autoincrement())
+  image       String
+  favorite    String
   userId      Int
-  type        String?
-  favoritedBy User    @relation(fields: [userId], references: [id])
+  type        String
+  favoritedBy User   @relation(fields: [userId], references: [id])
 }

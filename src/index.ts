@@ -7,8 +7,16 @@ import userRouter from './resources/user/user.router';
 import playersRouter from './resources/players/players.router';
 import searchRouter from './resources/search/search.router';
 import session from 'express-session';
-import passportInit from './utils/passport';
+// import passportInit from './utils/passport';
 import passport from 'passport';
+
+import * as admin from 'firebase-admin';
+
+const serviceAccount = require('../serviceKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 const app: Application = express();
 
@@ -27,7 +35,7 @@ app.use(
     saveUninitialized: true,
   })
 );
-passportInit();
+// passportInit();
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -40,15 +48,6 @@ app.use('/search', searchRouter);
 app.get('/', (req, res) => {
   console.log(req.isAuthenticated());
   res.send(req.user);
-});
-
-app.get('/test', (req, res) => {
-  const testObj = {
-    token: '326726432743264327',
-    message: 'hellou',
-  };
-
-  res.status(200).send(testObj);
 });
 
 async function bootstrap() {
