@@ -1,0 +1,36 @@
+import { FirebaseUser, UserInfo } from './../../interfaces/user-info.interface';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+export const findOrCreateUser = async ({
+  uid,
+  email,
+  picture,
+  name,
+}: FirebaseUser): Promise<UserInfo> => {
+  let user;
+
+  try {
+    user = await prisma.user.findOne({
+      where: {
+        uid,
+      },
+    });
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          uid,
+          email,
+          image: picture,
+          name,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  return user as UserInfo;
+};

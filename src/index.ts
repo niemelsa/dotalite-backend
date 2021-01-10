@@ -7,8 +7,6 @@ import userRouter from './resources/user/user.router';
 import playersRouter from './resources/players/players.router';
 import searchRouter from './resources/search/search.router';
 import session from 'express-session';
-// import passportInit from './utils/passport';
-import passport from 'passport';
 
 import * as admin from 'firebase-admin';
 
@@ -35,20 +33,12 @@ app.use(
     saveUninitialized: true,
   })
 );
-// passportInit();
-app.use(passport.initialize());
-app.use(passport.session());
 
 // routes
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/players', playersRouter);
 app.use('/search', searchRouter);
-
-app.get('/', (req, res) => {
-  console.log(req.isAuthenticated());
-  res.send(req.user);
-});
 
 async function bootstrap() {
   app.listen(config.port, () => {
