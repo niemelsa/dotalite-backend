@@ -4,6 +4,6 @@ import controllers from './auth.controllers';
 
 const router = express.Router();
 
-router.get('/', [extractIdToken, verifyIdToken], controllers.authenticateUser);
+router.get('/signin', [extractIdToken, verifyIdToken], controllers.signIn);
 
 export default router;

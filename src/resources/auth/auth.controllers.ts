@@ -16,12 +16,12 @@ import { Response } from 'express';
 //     });
 // };
 
-const authenticateUser = async (req: UserRequest, res: Response) => {
+const signIn = async (req: UserRequest, res: Response) => {
   const user: UserInfo = await findOrCreateUser(req.user);
 
   res.status(200).send(user);
 };
 
 export default {
-  authenticateUser,
+  signIn,
 };
