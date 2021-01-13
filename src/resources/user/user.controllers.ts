@@ -1,12 +1,11 @@
+import { Response } from 'express';
 import { updateUser } from './../../utils/updateUser';
-import { findUser } from '../../utils/findUser';
 import { UserRequest } from './../../interfaces/user-request.interface';
-import { Request, Response } from 'express';
 
 const linkPlayerProfile = async (req: UserRequest, res: Response) => {
-  console.log('REQUEST: ', req);
   const { uid } = req.user;
-  const { playerId } = req.body;
+  let { playerId } = req.body;
+  playerId = playerId.toString();
 
   updateUser(uid, { playerId })
     .then((user) => {

@@ -8,20 +8,28 @@ const getSearchResults = (req: Request, res: Response) => {
   const others = axios.get(
     `https://api.stratz.com/api/v1/search/?query=${query}`
   );
+  console.log('hello?');
 
   axios
     .all([players, others])
     .then((responses) => {
       const players = responses[0].data;
-      const { teams, matches, leagues, proPlayers } = responses[1].data;
+      const {
+        teams,
+        matches,
+        leagues: tournaments,
+        proPlayers,
+      } = responses[1].data;
 
       const response: SearchResponse = {
         players,
         teams,
         matches,
-        tournaments: leagues,
+        tournaments,
         proPlayers,
       };
+
+      console.log(response);
 
       res.status(200).send(response);
     })

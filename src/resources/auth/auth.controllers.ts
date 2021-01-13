@@ -1,23 +1,18 @@
-import { findOrCreateUser } from './auth.service';
+import { findUser } from '../../utils/findUser';
 import { UserInfo } from './../../interfaces/user-info.interface';
 import { UserRequest } from './../../interfaces/user-request.interface';
 import { Response } from 'express';
-
-// const verifyToken = async (req: UserRequest, res: Response) => {
-//   console.log('VERIFYING TOKEN');
-//   const token = req.token;
-
-//   verifyJwtToken(token)
-//     .then((user) => {
-//       res.send({ token, user });
-//     })
-//     .catch((error) => {
-//       res.status(403).send(error);
-//     });
-// };
+import { createUser } from '../../utils/createUser';
 
 const signIn = async (req: UserRequest, res: Response) => {
-  const user: UserInfo = await findOrCreateUser(req.user);
+  let user: UserInfo;
+  const { uid } = req.user;
+
+  user = await findUser(uid);
+
+  if (!user) {
+    user = await createUser(req.user);
+  }
 
   res.status(200).send(user);
 };

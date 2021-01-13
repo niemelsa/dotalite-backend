@@ -1,31 +1,28 @@
+import { UpdateUser } from './../interfaces/update-user.interface';
 import { UserInfo } from './../interfaces/user-info.interface';
 import { PrismaClient } from '@prisma/client';
 import { findUser } from './findUser';
 
 const prisma = new PrismaClient();
 
-interface UpdateUserOptions {
-  name?: string;
-  image?: string;
-  playerId?: string;
-}
-
-export const updateUser = async (uid: string, newValues: UpdateUserOptions) => {
+export const updateUser = async (uid: string, newValues: UpdateUser) => {
   let user: any = await findUser(uid);
 
   if (!user) {
     return null;
   }
 
+  const { id, ...values } = user;
+
   try {
-    let updatedValues = { ...user, ...newValues };
+    let updated = { ...values, ...newValues };
 
     user = await prisma.user.update({
       where: {
         uid,
       },
       data: {
-        ...updatedValues,
+        ...updated,
       },
     });
   } catch (error) {
