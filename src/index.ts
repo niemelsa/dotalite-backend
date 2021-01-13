@@ -10,10 +10,8 @@ import session from 'express-session';
 
 import * as admin from 'firebase-admin';
 
-const serviceAccount = require('../serviceKey.json');
-
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.applicationDefault(),
 });
 
 const app: Application = express();
