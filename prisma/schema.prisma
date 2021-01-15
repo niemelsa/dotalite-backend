@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["uncheckedScalarInputs"]
 }
 
 datasource db {
@@ -18,10 +19,11 @@ model User {
 }
 
 model Favorite {
-  id          Int    @id @default(autoincrement())
-  image       String
-  favorite    String
-  userId      Int
-  type        String
-  favoritedBy User   @relation(fields: [userId], references: [id])
+  id         Int    @id @default(autoincrement())
+  favoriteId String
+  userId     Int
+  title      String
+  image      String
+  type       String
+  user       User   @relation(fields: [userId], references: [id])
 }

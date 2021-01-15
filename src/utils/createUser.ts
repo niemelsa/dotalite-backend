@@ -8,7 +8,7 @@ export const createUser = async ({
   email,
   picture,
   name,
-}: FirebaseUser): Promise<UserInfo> => {
+}: FirebaseUser) => {
   let user;
 
   try {

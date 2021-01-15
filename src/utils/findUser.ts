@@ -1,4 +1,4 @@
-import { UserInfo } from '../interfaces/user-info.interface';
+import { UserInfo } from './../interfaces/user-info.interface';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();

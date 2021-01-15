@@ -1,5 +1,5 @@
-import { UpdateUser } from './../interfaces/update-user.interface';
 import { UserInfo } from './../interfaces/user-info.interface';
+import { UpdateUser } from './../interfaces/update-user.interface';
 import { PrismaClient } from '@prisma/client';
 import { findUser } from './findUser';
 
