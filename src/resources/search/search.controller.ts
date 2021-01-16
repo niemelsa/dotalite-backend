@@ -8,7 +8,6 @@ const getSearchResults = (req: Request, res: Response) => {
   const others = axios.get(
     `https://api.stratz.com/api/v1/search/?query=${query}`
   );
-  console.log('hello?');
 
   axios
     .all([players, others])

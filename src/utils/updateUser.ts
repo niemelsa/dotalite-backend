@@ -24,10 +24,13 @@ export const updateUser = async (uid: string, newValues: UpdateUser) => {
       data: {
         ...updated,
       },
+      include: {
+        favorites: true,
+      },
     });
   } catch (error) {
     console.log(error);
   }
 
-  return user as UserInfo;
+  return user;
 };

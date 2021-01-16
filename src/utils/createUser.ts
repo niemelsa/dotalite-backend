@@ -19,10 +19,13 @@ export const createUser = async ({
         image: picture,
         name,
       },
+      include: {
+        favorites: true,
+      },
     });
   } catch (error) {
     console.log(error);
   }
 
-  return user as UserInfo;
+  return user;
 };

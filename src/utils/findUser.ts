@@ -1,4 +1,3 @@
-import { UserInfo } from './../interfaces/user-info.interface';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -11,10 +10,13 @@ export const findUser = async (uid: string) => {
       where: {
         uid,
       },
+      include: {
+        favorites: true,
+      },
     });
   } catch (error) {
     console.log(error);
   }
 
-  return user as UserInfo;
+  return user;
 };

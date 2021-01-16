@@ -1,26 +1,20 @@
 import { IsNumber, IsString, Length } from 'class-validator';
 
-export class HasPlayerId {
-  @IsNumber()
-  playerId!: string;
-}
-
 export class AddFavoriteRequest {
   @IsNumber()
-  playerId!: string;
+  favoriteId: number | null = null;
 
   @IsString()
-  image!: string;
+  image: string | null = null;
 
   @IsString()
   @Length(4, 10)
-  type!: string;
+  type: string | null = null;
 
   @IsString()
-  title!: string;
-}
+  title: string | null = null;
 
-export class RemoveFavoriteRequest {
-  @IsNumber()
-  playerId!: string;
+  constructor(init?: Partial<AddFavoriteRequest>) {
+    Object.assign(this, init);
+  }
 }

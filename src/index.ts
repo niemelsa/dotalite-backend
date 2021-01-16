@@ -6,13 +6,7 @@ import authRouter from './resources/auth/auth.router';
 import userRouter from './resources/user/user.router';
 import playersRouter from './resources/players/players.router';
 import searchRouter from './resources/search/search.router';
-
-import * as admin from 'firebase-admin';
 import { validationError } from './middleware/validation';
-
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-});
 
 const app: Application = express();
 

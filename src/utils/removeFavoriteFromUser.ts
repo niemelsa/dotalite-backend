@@ -1,30 +1,21 @@
-import { Favorite } from './../interfaces/favorite.interface';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const addFavoriteToUser = async ({
-  userId,
-  favoriteId,
-  type,
-  image,
-  title,
-}: Favorite) => {
+export const removeFavoriteFromUser = async (
+  uid: string,
+  favoriteId: string
+) => {
   let user;
 
   try {
     user = await prisma.user.update({
       where: {
-        uid: userId,
+        uid,
       },
       data: {
         favorites: {
-          create: {
-            type,
-            favoriteId,
-            image,
-            title,
-          },
+          deleteMany: { favoriteId },
         },
       },
       include: {

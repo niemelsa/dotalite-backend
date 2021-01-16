@@ -1,20 +1,24 @@
 import { ValidationError, Validator } from 'class-validator';
 import { Request, RequestHandler, Response, NextFunction } from 'express';
-import { deserialize } from 'json-typescript-mapper';
 
 type Constructor<T> = { new (): T };
 
-export function validate<T>(type: Constructor<T>): RequestHandler {
+export function validate<T extends object>(
+  type: Constructor<T>
+): RequestHandler {
   let validator = new Validator();
+  let instance = new type();
 
-  return (req, res, next) => {
-    let input: object = deserialize<any>(type, req.body);
+  return (req: Request, res: Response, next: NextFunction) => {
+    Object.keys(instance).forEach((key) => {
+      instance[key as keyof T] = req.body[key];
+    });
 
-    let errors = validator.validateSync(input);
+    let errors = validator.validateSync(instance);
     if (errors.length > 0) {
       next(errors);
     } else {
-      req.body = input;
+      Object.assign(req.body, instance);
       next();
     }
   };
