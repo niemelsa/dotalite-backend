@@ -1,4 +1,7 @@
-import { AddFavoriteRequest } from './../../utils/validation-schemas';
+import {
+  AddFavoriteRequest,
+  HasPlayerId,
+} from './../../utils/validation-schemas';
 import { verifyIdToken } from './../../middleware/auth';
 import express from 'express';
 import { extractIdToken } from '../../middleware/auth';
@@ -10,7 +13,7 @@ const router = express.Router();
 router.use([extractIdToken, verifyIdToken]);
 
 /* /api/user */
-router.put('/link/:playerId', controllers.linkPlayerProfile);
+router.put('/link', validate(HasPlayerId), controllers.linkPlayerProfile);
 
 router.post('/favorite', validate(AddFavoriteRequest), controllers.addFavorite);
 

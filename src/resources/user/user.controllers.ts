@@ -7,7 +7,12 @@ import { addFavoriteToUser } from '../../utils/addFavoriteToUser';
 
 const linkPlayerProfile = async (req: UserRequest, res: Response) => {
   const { uid } = req.user;
-  let { playerId } = req.params;
+  let { playerId } = req.body;
+
+  if (!playerId) {
+    res.status(401).end();
+  }
+
   playerId = playerId.toString();
 
   updateUser(uid, { playerId })
