@@ -20,8 +20,9 @@ const getPlayerData = (req: Request, res: Response) => {
         res.status(200).send(result);
       })
     )
-    .catch((errors) => {
-      console.log(errors);
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
     });
 };
 
