@@ -5,5 +5,6 @@ import controllers from './auth.controllers';
 const router = express.Router();
 
 router.get('/signin', [extractIdToken, verifyIdToken], controllers.signIn);
+router.post('/register', controllers.register);
 
 export default router;

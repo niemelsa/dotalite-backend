@@ -1,6 +1,6 @@
 import { findUser } from '../../utils/findUser';
 import { UserRequest } from './../../interfaces/user-request.interface';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { createUser } from '../../utils/createUser';
 
 const signIn = async (req: UserRequest, res: Response) => {
@@ -16,6 +16,9 @@ const signIn = async (req: UserRequest, res: Response) => {
   res.status(200).send(user);
 };
 
+const register = async (req: Request, res: Response) => {};
+
 export default {
   signIn,
+  register,
 };

@@ -2,7 +2,7 @@ import { Favorite } from './favorite.interface';
 
 export interface UserInfo {
   id: number;
-  name: string;
+  name?: string;
   email: string;
   image: string;
   uid: string;
